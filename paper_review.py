@@ -21,7 +21,7 @@ EXPERTS = [
 },
 {
     "name": "Industry Practitioner",
-    "description": "You work at a company or organization developing an application or product of your choice (that has not already been suggested in a prior session). Bring a convincing pitch for why you should be paid to implement the method in the paper, and discuss at least one positive and negative impact of this application."
+    "description": "You work as a AI engineer at a company that is working in a field similar to the paper. What is one thing you can do when you go back to work tomorrow that is inspired by the paper?"
 },
 {
     "name": "Hacker",
