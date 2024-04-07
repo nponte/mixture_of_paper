@@ -1,34 +1,8 @@
 import click
-import arxiv
 import os
 import tempfile
-
-### arxiv library ###
-#####################
-
-def pprint_result(paper):
-    string = f"[{str(paper.published)[:10]}] {paper.title} -- {paper.entry_id}"
-    print("-"*len(string))
-    print(string)
-    print("-"*len(string))
-
-def arxiv_keyword_search(keyword: str, max_results: int = 5):
-    search = arxiv.Search(
-        query=keyword,
-        max_results=max_results,
-        sort_by = arxiv.SortCriterion.Relevance,
-    )
-    for paper in client.results(search):
-        pprint_result(paper)
-        if input("Download? (y)") == "y":
-            name = paper.title.lower().replace(' ', '_')
-            paper.download_source(dirpath="./papers", filename=f"{name}.tar.gz")
-
-### paper review tools ###
-##########################
-
-### click ###
-#############
+from arxiv_lib import arxiv_keyword_search
+from paper_review import review_paper
 
 @click.group()
 def cli():
@@ -44,24 +18,23 @@ def find(r: int, keyword: str):
 def review():
     for _, _, filenames in os.walk('./papers'):
         paper_map = {}
-        print('-'*20)
         for i, f in enumerate(filenames):
             print(f"{i}: {f[:-7]}")
             paper_map[str(i)] = f
-        print('-'*20)
-            
-    try:
-        file = paper_map[input("Review? (#)")]
-        with tempfile.TemporaryDirectory() as tmpdir:
-            os.system(f"tar -xvf ./papers/{file} -C {tmpdir} > /dev/null 2>&1")
-            
-    except:
+    
+    selection = input("Review? (#)")
+    if selection not in paper_map:
         print("Invalid input -- exiting")
         return
+    else:
+        print (f"Reviewing {paper_map[selection]}")
+    file = paper_map[selection]
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.system(f"tar -xvf ./papers/{file} -C {tmpdir} > /dev/null 2>&1")
+        review_paper(tmpdir)
 
 cli.add_command(find)
 cli.add_command(review)
 
 if __name__ == '__main__':
-    client = arxiv.Client()
     cli()
