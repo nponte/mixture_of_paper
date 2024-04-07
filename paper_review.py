@@ -2,6 +2,7 @@ from openai import OpenAI
 from keys import OPENAI_API_KEY
 from rich.console import Console
 from rich.markdown import Markdown
+import os
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 SEPERATOR = 318
@@ -78,8 +79,17 @@ def paper_expert_review(paper_content: str, expert_info):
     md = Markdown(response)
     console.print(md)
 
+def _find_tex(directory: str):
+    for item in os.listdir(directory):
+        item = os.path.join(directory, item)
+        if os.path.isfile(item) and item.endswith('.tex'):
+            return item
+
+    print ('unable to find tex file')
+    return None
+
 def review_paper(directory: str):
-    with open(f"{directory}/main.tex", 'r') as f:
+    with open(_find_tex(directory), 'r') as f:
         tex_content = f.read()
 
     extract_basic_paper_info(tex_content)
