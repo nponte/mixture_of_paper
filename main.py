@@ -30,7 +30,7 @@ def review():
         print (f"Reviewing {paper_map[selection]}")
     file = paper_map[selection]
     with tempfile.TemporaryDirectory() as tmpdir:
-        os.system(f"tar -xvf ./papers/{file} -C {tmpdir}")
+        os.system(f"tar -xvf ./papers/{file} -C {tmpdir} > /dev/null 2>&1")
         review_paper(tmpdir)
 
 cli.add_command(find)

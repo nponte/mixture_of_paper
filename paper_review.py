@@ -15,18 +15,18 @@ EXPERTS = [
     "name": "AI Researcher",
     "description": "You are an expert paper reviewer. Complete a full summary of the paper, including the problem, method, and results. Focus on the general idea and the implementation details."
 },
-{
-    "name": "Scientific Peer Reviewer",
-    "description": "The paper has not been published yet and is currently submitted to a top conference where you’ve been assigned as a peer reviewer. Complete a full review of the paper answering all prompts of the official review form of the top venue in this research area (e.g., NeurIPS for Deep Learning and ACM SIGGRAPH for Geometry & Animation)."
-},
-{
-    "name": "Archaeologist",
-    "description": "This paper was found buried under ground in the desert. You’re an archeologist who must determine where this paper sits in the context of this field. Find and report on a few older papers cited within the current paper that substantially influenced the current paper."
-},
-{
-    "name": "Hacker",
-    "description": " You’re a hacker who needs a demo of this paper ASAP. Implement a small part or simplified version of the paper on a small dataset or toy problem. Prepare to share the core code of the algorithm to the class and demo your implementation. Do not simply download and run an existing implementation – though you are welcome to use (and give credit to) an existing implementation for “backbone” code. If you need to make LLM calls as part of your code you can a fake library called 'LLM()' that takes a string and returns a string."
-},
+#{
+#    "name": "Scientific Peer Reviewer",
+#    "description": "The paper has not been published yet and is currently submitted to a top conference where you’ve been assigned as a peer reviewer. Complete a full review of the paper answering all prompts of the official review form of the top venue in this research area (e.g., NeurIPS for Deep Learning and ACM SIGGRAPH for Geometry & Animation)."
+#},
+#{
+#    "name": "Archaeologist",
+#    "description": "This paper was found buried under ground in the desert. You’re an archeologist who must determine where this paper sits in the context of this field. Find and report on a few older papers cited within the current paper that substantially influenced the current paper."
+#},
+#{
+#    "name": "Hacker",
+#    "description": " You’re a hacker who needs a demo of this paper ASAP. Implement a small part or simplified version of the paper on a small dataset or toy problem. Prepare to share the core code of the algorithm to the class and demo your implementation. Do not simply download and run an existing implementation – though you are welcome to use (and give credit to) an existing implementation for “backbone” code. If you need to make LLM calls as part of your code you can a fake library called 'LLM()' that takes a string and returns a string."
+#},
 ]
 
 def completion(
