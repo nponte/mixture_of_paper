@@ -8,6 +8,14 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 SEPERATOR = 318
 EXPERTS = [
 {
+    "name": "Agent Smith",
+    "description": "You are an working on a presentation on the topic 'Autonomous Agents'. You need to include a slide on this paper. Summarize the paper in 3-4 bullet points with regards to the topic."
+},
+{
+    "name": "AI Researcher",
+    "description": "You are an expert paper reviewer. Complete a full summary of the paper, including the problem, method, and results. Focus on the general idea and the implementation details."
+},
+{
     "name": "Scientific Peer Reviewer",
     "description": "The paper has not been published yet and is currently submitted to a top conference where you’ve been assigned as a peer reviewer. Complete a full review of the paper answering all prompts of the official review form of the top venue in this research area (e.g., NeurIPS for Deep Learning and ACM SIGGRAPH for Geometry & Animation)."
 },
@@ -16,21 +24,9 @@ EXPERTS = [
     "description": "This paper was found buried under ground in the desert. You’re an archeologist who must determine where this paper sits in the context of this field. Find and report on a few older papers cited within the current paper that substantially influenced the current paper."
 },
 {
-    "name": "Academic Researcher",
-    "description": "You’re a researcher who is working on a new project in this area. Propose an imaginary follow-up project not just based on the current but only possible due to the existence and success of the current paper."
-},
-{
-    "name": "Industry Practitioner",
-    "description": "You work as a AI engineer at a company that is working in a field similar to the paper. What is one thing you can do when you go back to work tomorrow that is inspired by the paper?"
-},
-{
     "name": "Hacker",
-    "description": " You’re a hacker who needs a demo of this paper ASAP. Implement a small part or simplified version of the paper on a small dataset or toy problem. Prepare to share the core code of the algorithm to the class and demo your implementation. Do not simply download and run an existing implementation – though you are welcome to use (and give credit to) an existing implementation for “backbone” code."
+    "description": " You’re a hacker who needs a demo of this paper ASAP. Implement a small part or simplified version of the paper on a small dataset or toy problem. Prepare to share the core code of the algorithm to the class and demo your implementation. Do not simply download and run an existing implementation – though you are welcome to use (and give credit to) an existing implementation for “backbone” code. If you need to make LLM calls as part of your code you can a fake library called 'LLM()' that takes a string and returns a string."
 },
-#{
-#    "name": "Private Investigator",
-#    "description": "You are a detective who needs to run a background check on one of the paper’s authors. Where have they worked? What did they study? What previous projects might have led to working on this one? What motivated them to work on this project?"
-#}
 ]
 
 def completion(
@@ -43,23 +39,6 @@ def completion(
         max_tokens=4096,
     )
     return response.choices[0].message.content
-
-def extract_basic_paper_info(paper_content: str):
-    PROMPT = f"""
-    [Start of Paper]
-    {paper_content}
-    [End of Paper]
-
-    Give a short recap (3-4 sentences) of the paper. Start with the title.
-    """
-    response = completion([
-        {"role": "system", "content": "You are an expert paper reviewer."},
-        {"role": "user", "content": PROMPT}
-    ])
-    console = Console()
-    md = Markdown("# Short Recap")
-    console.print(md)
-    print (response)
 
 def paper_expert_review(paper_content: str, expert_info):
     PROMPT = f"""
@@ -80,19 +59,19 @@ def paper_expert_review(paper_content: str, expert_info):
     console.print(md)
 
 def _find_tex(directory: str):
+    largest_tex_file, largest_size = None, 0
     for item in os.listdir(directory):
-        item = os.path.join(directory, item)
-        if os.path.isfile(item) and item.endswith('.tex'):
-            return item
-
-    print ('unable to find tex file')
-    return None
+        item_path = os.path.join(directory, item)
+        if os.path.isfile(item_path) and item_path.endswith('.tex'):
+            current_size = os.path.getsize(item_path)
+            if current_size > largest_size:
+                largest_tex_file = item_path
+                largest_size = current_size
+    return largest_tex_file
 
 def review_paper(directory: str):
     with open(_find_tex(directory), 'r') as f:
         tex_content = f.read()
-
-    extract_basic_paper_info(tex_content)
 
     for expert in EXPERTS:
         paper_expert_review(tex_content, expert)
