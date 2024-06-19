@@ -31,7 +31,7 @@ EXPERTS = [
 
 def completion(
     messages: str,
-    model: str = "gpt-4-turbo-preview"
+    model: str = "gpt-4o"
 ) -> str:
     response = client.chat.completions.create(
         model=model,
