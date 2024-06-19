@@ -9,7 +9,7 @@ SEPERATOR = 318
 EXPERTS = [
 {
     "name": "Agent Smith",
-    "description": "You are an working on a presentation on the topic 'Autonomous Agents'. You need to include a slide on this paper. Summarize the paper in 3-4 bullet points with regards to the topic."
+    "description": "You are an working on a presentation on the topic 'Synthetic Data'. You need to include a slide on this paper. Summarize the paper in 3-4 bullet points with regards to the topic."
 },
 {
     "name": "AI Researcher",
